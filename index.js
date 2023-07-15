@@ -45,7 +45,6 @@ const checkToken = (req, res, next) => {
       let decodedToken = jwt.verify(token, "secret");
   
       req.user_id = decodedToken.user_id;
-      console.log(decodedToken);
   
       next();
     } catch {
@@ -104,7 +103,7 @@ app.post("/register", (req, res) => {
     });
   });
 
-  //Login a user
+//Login a user
 app.post("/login", (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
@@ -151,6 +150,11 @@ app.post("/create-post",checkToken,(req,res)=>{
     const content = req.body.content;
     const image = req.body.image;
     const user_id = req.user_id;
+    if(!content){
+        return res.status(400).json({
+            message:"All fields are required"
+        })
+    }
     Post.create({user:user_id
         ,content,image}).then((data,err)=>{
         if(err){
@@ -159,11 +163,7 @@ app.post("/create-post",checkToken,(req,res)=>{
                 error:err
             })
         }
-        if(!content){
-            return res.status(400).json({
-                message:"All fields are required"
-            })
-        }
+        
         return res.status(200).json({
             message:"Post created successfully",
             data:data
@@ -249,7 +249,6 @@ app.patch("/posts/:id/comment",checkToken,(req,res)=>{
     const id = req.params.id;
     const Comment = req.body.comment;
     
-    console.log(Comment,id);
     Post.findByIdAndUpdate(id,{$push:{comments:Comment}},{new:true}).then((data,err)=>{
         if(err){
             return res.status(500).json({
@@ -399,5 +398,20 @@ app.get("/users/:id/posts",checkToken,(req,res)=>{
 }
 );
 
+//Get user by name
+app.get("/users/username/:name",checkToken,(req,res)=>{
+    const name = req.params.name;
+    User.find({username:name}).then((data,err)=>{
+        if(err){
+            return res.status(500).json({
+                message:"Error occured while getting user",
+                error:err
+            })
+        }
+        return res.status(200).json({
+            message:"User retrieved successfully",
+            data:data
+        });
+})});
 
 
