@@ -10,17 +10,14 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "YOUR-DOMAIN.TLD"); // Update to match the domain you will make the request from
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
 
 app.listen(PORT, () => {
     console.log("Listening on PORT:" + PORT);
 });
 
-app.use(cors());
+app.use(cors({
+    origin: "https://social-frontend-olive.vercel.app/",
+}));
 app.use(json());
 //Connect to mongodb
 mongoose.connect(process.env.DATABASE_URL).then(() => {console.log("Database connected successfully");});
