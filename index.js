@@ -144,6 +144,24 @@ app.post("/login", (req, res) => {
     });
 });
 
+//get current user
+app.get("/current-user",checkToken,(req,res)=>{
+    const id = req.user_id;
+    User.findById(id).then((data,err)=>{
+        if(err){
+            return res.status(500).json({
+                message:"Error occured while getting user",
+                error:err
+            })
+        }
+        return res.status(200).json({
+            message:"User retrieved successfully",
+            data:data
+        });
+    })
+}
+);
+
 
 //Create a new post
 app.post("/create-post",checkToken,(req,res)=>{
