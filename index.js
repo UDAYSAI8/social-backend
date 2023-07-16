@@ -16,7 +16,7 @@ app.listen(PORT, () => {
 });
 
 app.use(cors({
-    origin: "https://social-frontend-olive.vercel.app/",
+    origin: "https://social-frontend-7z3klajzv-udaysai8.vercel.app/login",
 }));
 app.use(json());
 //Connect to mongodb
