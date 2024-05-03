@@ -15,9 +15,7 @@ app.listen(PORT, () => {
     console.log("Listening on PORT:" + PORT);
 });
 
-app.use(cors({
-    origin: "https://social-frontend-7z3klajzv-udaysai8.vercel.app/login",
-}));
+app.use(cors());
 app.use(json());
 //Connect to mongodb
 mongoose.connect(process.env.DATABASE_URL).then(() => {console.log("Database connected successfully");});
